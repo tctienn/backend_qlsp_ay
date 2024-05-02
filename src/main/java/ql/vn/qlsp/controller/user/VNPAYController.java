@@ -40,6 +40,7 @@ public class VNPAYController {
         // String baseUrl = request.getScheme() + "s"+"://" + request.getServerName() + ":" + request.getServerPort();
         String baseUrl = request.getScheme() + "s"+"://" + request.getServerName();
         String vnpayUrl = vnPayService.createOrder(idUser,address,orderTotal, orderInfo, baseUrl);
+        System.out.println("vnpayUrl"+orderTotal);
         return "redirect:" + vnpayUrl;
     }
 
