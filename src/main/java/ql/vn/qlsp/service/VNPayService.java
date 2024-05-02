@@ -47,6 +47,11 @@ public class VNPayService {
         // Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         // Calendar cld = Calendar.getInstance(TimeZone.getDefault());
         //Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+   
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        Date date = formatter.parse(timestamp);
+        Calendar cld = Calendar.getInstance();
+        cld.setTime(date)
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         //String vnp_CreateDate = formatter.format(cld.getTime());
         String time = payload.get("time");
@@ -54,7 +59,7 @@ public class VNPayService {
         Date date = formatter.parse(time);
         Calendar cld = Calendar.getInstance();
 
-        String vnp_CreateDate = timestamp;
+        String vnp_CreateDate = formatter.format(cld.getTime());
         vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
         System.out.println("vnp_CreateDate"+vnp_CreateDate);
         cld.add(Calendar.MINUTE, 15);
