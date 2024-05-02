@@ -25,7 +25,7 @@ public class VNPAYController {
         String contextPath = request.getContextPath(); // includes application context path
 
 //        String url = scheme+"://"+serverName+":"+serverPort+contextPath;
-        String url = scheme+"s"+"://"+serverName+":"+serverPort+contextPath;
+        String url = scheme+"s"+"://"+serverName+contextPath;
         return url+"/submitOrder";
     }
 
@@ -37,7 +37,8 @@ public class VNPAYController {
                               @RequestParam("idUser") Long idUser,
                               HttpServletRequest request){
         System.out.println("ayy"+orderTotal);
-        String baseUrl = request.getScheme() + "s"+"://" + request.getServerName() + ":" + request.getServerPort();
+        // String baseUrl = request.getScheme() + "s"+"://" + request.getServerName() + ":" + request.getServerPort();
+        String baseUrl = request.getScheme() + "s"+"://" + request.getServerName();
         String vnpayUrl = vnPayService.createOrder(idUser,address,orderTotal, orderInfo, baseUrl);
         return "redirect:" + vnpayUrl;
     }
