@@ -17,7 +17,7 @@ public interface InvoiceRepository extends JpaRepository<InvoiceEntity,Integer> 
     List<InvoiceEntity> getInvoicesByweek();
 
     // lấy top 10 ngươif dùng
-    @Query(value = "SELECT tennguoinhan as name, sdt,gmail, COUNT(id) as coun " +
+    @Query(value = "SELECT tennguoinhan as name, max(sdt) as sdt,max(gmail) as gmail, COUNT(id) as coun " +
             "FROM invoice " +
             "WHERE trangthai = 'succes' " +
             "GROUP BY tennguoinhan " +
