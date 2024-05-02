@@ -37,7 +37,7 @@ public class VNPAYController {
                               @RequestParam("idUser") Long idUser,
                               HttpServletRequest request){
         System.out.println("ayy"+orderTotal);
-        String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+        String baseUrl = request.getScheme() + "://" + request.getServerName();
         String vnpayUrl = vnPayService.createOrder(idUser,address,orderTotal, orderInfo, baseUrl);
         return "redirect:" + vnpayUrl;
     }
