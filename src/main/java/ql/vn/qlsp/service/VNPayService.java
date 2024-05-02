@@ -18,7 +18,7 @@ public class VNPayService {
     @Autowired
     InvoiceService invoiceService;
 
-    public String createOrder( Long idUser, String address,int total, String orderInfor, String urlReturn){
+    public String createOrder( Long idUser, String address,int total, String orderInfor, String urlReturn,String timestamp){
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String vnp_TxnRef = VNPayConfig.getRandomNumber(8);
@@ -46,9 +46,11 @@ public class VNPayService {
 
         // Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         // Calendar cld = Calendar.getInstance(TimeZone.getDefault());
-        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-        String vnp_CreateDate = formatter.format(cld.getTime());
+        //Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+        //SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        //String vnp_CreateDate = formatter.format(cld.getTime());
+
+        String vnp_CreateDate = timestamp;
         vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
         System.out.println("vnp_CreateDate"+vnp_CreateDate);
         cld.add(Calendar.MINUTE, 15);
