@@ -51,7 +51,7 @@ public class VNPayService {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         Date date = formatter.parse(timestamp);
         Calendar cld = Calendar.getInstance();
-        cld.setTime(date)
+        cld.setTime(date);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         //String vnp_CreateDate = formatter.format(cld.getTime());
         String time = payload.get("time");
