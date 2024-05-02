@@ -55,7 +55,7 @@ public class VNPAYController {
 
     @GetMapping("/vnpay-payment")
     public String GetMapping(HttpServletRequest request, Model model){
-        try{
+       
             int paymentStatus =vnPayService.orderReturn(request);
 
             String orderInfo = request.getParameter("vnp_OrderInfo");
@@ -79,10 +79,7 @@ public class VNPAYController {
                 System.out.println(ex);
             }
             return paymentStatus == 1 ? "ordersuccess" : "orderfail";
-        }catch (ParseException ex){
-            System.out.println(ex);
-            return "false";
-        }
+     
        
     }
 }
