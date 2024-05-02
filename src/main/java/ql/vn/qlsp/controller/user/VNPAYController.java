@@ -35,7 +35,7 @@ public class VNPAYController {
                               @RequestParam("orderInfo") String orderInfo,
                               @RequestParam("address") String address,
                               @RequestParam("idUser") Long idUser,
-                              @RequestParam("timestamp") Long timestamp,
+                              @RequestParam("timestamp") String timestamp,
                               HttpServletRequest request){
         System.out.println("ayy"+orderTotal);
         // String baseUrl = request.getScheme() + "s"+"://" + request.getServerName() + ":" + request.getServerPort();
