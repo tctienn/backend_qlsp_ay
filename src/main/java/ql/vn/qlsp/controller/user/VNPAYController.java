@@ -36,7 +36,7 @@ public class VNPAYController {
                               @RequestParam("address") String address,
                               @RequestParam("idUser") Long idUser,
                               @RequestParam("timestamp") String timestamp,
-                              HttpServletRequest request){
+                              HttpServletRequest request)throws ParseException{
         System.out.println("ayy"+orderTotal);
         // String baseUrl = request.getScheme() + "s"+"://" + request.getServerName() + ":" + request.getServerPort();
         String baseUrl = request.getScheme() + "s"+"://" + request.getServerName();
@@ -49,7 +49,7 @@ public class VNPAYController {
     InvoiceService invoiceService;
 
     @GetMapping("/vnpay-payment")
-    public String GetMapping(HttpServletRequest request, Model model){
+    public String GetMapping(HttpServletRequest request, Model model)throws ParseException{
         int paymentStatus =vnPayService.orderReturn(request);
 
         String orderInfo = request.getParameter("vnp_OrderInfo");
