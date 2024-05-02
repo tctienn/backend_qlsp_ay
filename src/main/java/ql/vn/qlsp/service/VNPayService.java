@@ -18,7 +18,7 @@ public class VNPayService {
     @Autowired
     InvoiceService invoiceService;
 
-    public String createOrder( Long idUser, String address,int total, String orderInfor, String urlReturn, String timestamp){
+    public String createOrder( Long idUser, String address,int total, String orderInfor, String urlReturn, String timestamp)throws ParseException{
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String vnp_TxnRef = VNPayConfig.getRandomNumber(8);
