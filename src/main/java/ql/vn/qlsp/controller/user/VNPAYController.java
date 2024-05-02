@@ -8,6 +8,7 @@ import ql.vn.qlsp.service.InvoiceService;
 import ql.vn.qlsp.service.VNPayService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 
 //@org.springframework.stereotype.Controller
 @Controller
@@ -24,8 +25,7 @@ public class VNPAYController {
         int serverPort = request.getServerPort(); // port number
         String contextPath = request.getContextPath(); // includes application context path
 
-//        String url = scheme+"://"+serverName+":"+serverPort+contextPath;
-        String url = scheme+"s"+"://"+serverName+contextPath;
+        String url = scheme+"://"+serverName+":"+serverPort+contextPath;
         return url+"/submitOrder";
     }
 
@@ -35,43 +35,52 @@ public class VNPAYController {
                               @RequestParam("orderInfo") String orderInfo,
                               @RequestParam("address") String address,
                               @RequestParam("idUser") Long idUser,
-                              @RequestParam("timestamp") String timestamp,
-                              HttpServletRequest request)throws ParseException{
+                              HttpServletRequest request){
         System.out.println("ayy"+orderTotal);
-        // String baseUrl = request.getScheme() + "s"+"://" + request.getServerName() + ":" + request.getServerPort();
-        String baseUrl = request.getScheme() + "s"+"://" + request.getServerName();
-        String vnpayUrl = vnPayService.createOrder(idUser,address,orderTotal, orderInfo, baseUrl,timestamp);
-        System.out.println("vnpayUrl"+vnpayUrl);
-        return "redirect:" + vnpayUrl;
+        String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+        
+        try{
+            String vnpayUrl = vnPayService.createOrder(idUser,address,orderTotal, orderInfo, baseUrl);
+            return "redirect:" + vnpayUrl;
+        }catch (ParseException ex){
+            System.out.println(ex);
+            return "false";
+        }
     }
 
     @Autowired
     InvoiceService invoiceService;
 
     @GetMapping("/vnpay-payment")
-    public String GetMapping(HttpServletRequest request, Model model)throws ParseException{
-        int paymentStatus =vnPayService.orderReturn(request);
-
-        String orderInfo = request.getParameter("vnp_OrderInfo");
-        String paymentTime = request.getParameter("vnp_PayDate");
-        String transactionId = request.getParameter("vnp_TransactionNo");
-        String totalPrice = request.getParameter("vnp_Amount");
-        String vnp_TxnRef = request.getParameter("vnp_TxnRef");
-
-        model.addAttribute("orderId", orderInfo);
-        model.addAttribute("totalPrice", totalPrice);
-        model.addAttribute("paymentTime", paymentTime);
-        model.addAttribute("transactionId", transactionId);
+    public String GetMapping(HttpServletRequest request, Model model){
         try{
-            if(paymentStatus==1){
-                invoiceService.succesPay(vnp_TxnRef,transactionId,paymentTime);
-            }else {
-                invoiceService.falsePay(vnp_TxnRef,paymentTime);
+            int paymentStatus =vnPayService.orderReturn(request);
+
+            String orderInfo = request.getParameter("vnp_OrderInfo");
+            String paymentTime = request.getParameter("vnp_PayDate");
+            String transactionId = request.getParameter("vnp_TransactionNo");
+            String totalPrice = request.getParameter("vnp_Amount");
+            String vnp_TxnRef = request.getParameter("vnp_TxnRef");
+
+            model.addAttribute("orderId", orderInfo);
+            model.addAttribute("totalPrice", totalPrice);
+            model.addAttribute("paymentTime", paymentTime);
+            model.addAttribute("transactionId", transactionId);
+            try{
+                if(paymentStatus==1){
+                    invoiceService.succesPay(vnp_TxnRef,transactionId,paymentTime);
+                }else {
+                    invoiceService.falsePay(vnp_TxnRef,paymentTime);
+                }
             }
-        }
-        catch (Exception ex){
+            catch (Exception ex){
+                System.out.println(ex);
+            }
+            return paymentStatus == 1 ? "ordersuccess" : "orderfail";
+        }catch (ParseException ex){
             System.out.println(ex);
+            return "false";
         }
-        return paymentStatus == 1 ? "ordersuccess" : "orderfail";
+       
     }
 }
