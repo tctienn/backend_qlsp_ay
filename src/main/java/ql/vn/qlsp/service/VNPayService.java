@@ -18,15 +18,42 @@ public class VNPayService {
     @Autowired
     InvoiceService invoiceService;
 
-    public String createOrder( Long idUsformatter1.parse(timestamp);
-        Calendar cld = Calendar.getInstance();
-        cld.setTime(date);
-        //String vnp_CreateDate = formatter.format(cld.getTime());
+    public String createOrder( Long idUser, String address,int total, String orderInfor, String urlReturn, String timestamp){
+        String vnp_Version = "2.1.0";
+        String vnp_Command = "pay";
+        String vnp_TxnRef = VNPayConfig.getRandomNumber(8);
+        String vnp_IpAddr = "127.0.0.1";
+        String vnp_TmnCode = VNPayConfig.vnp_TmnCode;
+        String orderType = "order-type";
+        
+        Map<String, String> vnp_Params = new HashMap<>();
+        vnp_Params.put("vnp_Version", vnp_Version);
+        vnp_Params.put("vnp_Command", vnp_Command);
+        vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
+        vnp_Params.put("vnp_Amount", String.valueOf(total*100));
+        vnp_Params.put("vnp_CurrCode", "VND");
+//        System.out.printf("ay"+vnp_TxnRef);
+        vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
+        vnp_Params.put("vnp_OrderInfo", orderInfor);
+        vnp_Params.put("vnp_OrderType", orderType);
+
+        String locate = "vn";
+        vnp_Params.put("vnp_Locale", locate);
+
+        urlReturn += VNPayConfig.vnp_Returnurl;
+        vnp_Params.put("vnp_ReturnUrl", urlReturn);
+        vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
+
+        //Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
 
+         Date date = formatter.parse(timestamp); // Chuyển đổi chuỗi thành đối tượng Date
+        Calendar cld = Calendar.getInstance(); // Tạo một đối tượng Calendar
+        cld.setTime(date);
+        
         String vnp_CreateDate = formatter.format(cld.getTime());
         vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
-        System.out.println("vnp_CreateDate"+vnp_CreateDate);
+
         cld.add(Calendar.MINUTE, 15);
         String vnp_ExpireDate = formatter.format(cld.getTime());
         vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
