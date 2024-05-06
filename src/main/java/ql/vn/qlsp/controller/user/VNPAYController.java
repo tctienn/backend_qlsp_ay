@@ -26,7 +26,7 @@ public class VNPAYController {
         int serverPort = request.getServerPort(); // port number
         String contextPath = request.getContextPath(); // includes application context path
 
-        String url = scheme+"://"+serverName+":"+serverPort+contextPath;
+        String url = scheme+"s"+"://"+serverName+":"+serverPort+contextPath;
         return url+"/submitOrder";
     }
 
